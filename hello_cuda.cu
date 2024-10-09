@@ -8,7 +8,7 @@ __global__ void helloFromGPU()
 }
 
 int main() {
-    
+    // 2 blocks, 10 threads
     helloFromGPU<<<2, 10>>>();
     cudaDeviceSynchronize();
     cudaDeviceReset();
