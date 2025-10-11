@@ -25,23 +25,25 @@ int main()
     int h_data[] = {23, 9, 4, 53, 65, 12, 1, 33, 87, 45, 23, 12, 342, 56, 44, 99};
     int array_size = sizeof(h_data) / sizeof(h_data[0]); // 16
     int array_byte_size = sizeof(int) * array_size; // 64
-    printf("array byte size: %d", array_byte_size);
-
+    printf("array byte size: %d\n", array_byte_size);
+    printf("Total array elements: %d\n", array_size);
     printf("Array elements: ");
     for (int i = 0; i < array_size; i++) {
         printf("%d ", h_data[i]);
     }
-    printf("\n");
+    printf("\n============\n");
 
     int* d_data;
-	cudaMalloc((void**)&d_data, array_byte_size); // allocates memory in GPU
-	cudaMemcpy(d_data, h_data, array_byte_size, cudaMemcpyHostToDevice); // Transfer data to GPU
+    // allocates memory in GPU
+	cudaMalloc((void**)&d_data, array_byte_size); 
+    // Transfer data to GPU
+	cudaMemcpy(d_data, h_data, array_byte_size, cudaMemcpyHostToDevice);
 
 
     dim3 block(4);
     dim3 grid(4); 
 
-    unique_gid_calc <<< grid, block >> > (d_data);
+    unique_gid_calc <<<grid, block>>> (d_data);
     
 	cudaDeviceSynchronize();
 	cudaDeviceReset();
